@@ -16,7 +16,7 @@ class EmotionDataset:
         (EmotionDataset): the dataset class which return images and labels.
     """
 
-    def __init__(self, root='./', split='train'):
+    def __init__(self, root='./', split='train', transform=None):
         
         if split == 'train':
             path = os.path.join(root, "FER2013Train")
@@ -26,6 +26,8 @@ class EmotionDataset:
             path = os.path.join(root, "FER2013Test")
         else:
             raise ValueError(f'{split} is not valid value of split')
+
+        self.transform = transform
         
         self.path = path
 
@@ -42,6 +44,8 @@ class EmotionDataset:
 
         file_path = os.path.join(self.path, fname)
         image = read_image(file_path)
+        if self.transform is not None:
+            image = self.transform(image)
 
         label = temp[2:]
         label = np.array(label)

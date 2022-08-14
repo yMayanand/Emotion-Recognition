@@ -31,15 +31,34 @@ class EmotionModel(pl.LightningModule):
 
 	def validation_step(self, val_batch, batch_idx):
 		x, y = val_batch
-		out = self.encoder(x)
+		out = self.model(x)
 		loss = self.loss_func(out, y)  
 		self.log('val_loss', loss)
 
 
 def main():
+	# transforms
+	mean = [0.485, 0.456, 0.406]
+	std = [0.229, 0.224, 0.225]
+
+	transform = transforms.Compose([
+		transforms.ToTensor(),
+		transforms.Normalize(mean, std)
+	])
+
+
 	# data
-	train_ds = EmotionDataset(root='', split='train')
-	val_ds = EmotionDataset(root='', split='valid')
+	train_ds = EmotionDataset(
+		root='/content/Dataset/FERPlus/data', 
+		split='train', 
+		transform=transform
+	)
+
+	val_ds = EmotionDataset(
+		root='/content/Dataset/FERPlus/data', 
+		split='valid',
+		transform=transform
+	)
 
 	# dataloader
 	train_loader = DataLoader(train_ds, batch_size=32)
@@ -49,7 +68,7 @@ def main():
 	model = EmotionModel()
 
 	# training
-	trainer = pl.Trainer(gpus=1, limit_train_batches=0.5)
+	trainer = pl.Trainer(limit_train_batches=0.5)
 	trainer.fit(model, train_loader, val_loader)
 
 if __name__ == "__main__":
