@@ -14,3 +14,9 @@ def read_image(file):
     image = cv2.imread(file)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     return image
+
+def freeze(model, unfreeze=False):
+    """Function to freeze model parameters necessary for finetuning.
+    """
+    for param in model.parameters():
+        param.requires_grad = unfreeze
