@@ -11,12 +11,12 @@ from utils import freeze
 class EmotionModel(pl.LightningModule):
 	def __init__(self, num_classes=10, finetune=False, lr=1e-3):
 		super().__init__()
-		model = models.resnet18(weights=models.ResNet18_Weights)
+		model = models.resnet50(weights=models.ResNet50_Weights)
 		# unfreeze param for freeze
 		unfreeze = not finetune
 		freeze(model, unfreeze=unfreeze)
 		self.lr = lr
-		model.fc = nn.Linear(512, 10)
+		model.fc = nn.Linear(2048, 10)
 		self.model = model
 		self.loss_func = nn.BCEWithLogitsLoss()
 	  
@@ -46,22 +46,22 @@ def main():
 	# args
 	parser = argparse.ArgumentParser()
 	parser.add_argument(
-        "--root_dir", 
-        type = str,
-        help = "Base folder containing the training, validation and testing folder.", 
+		"--root_dir", 
+		type = str,
+		help = "Base folder containing the training, validation and testing folder.", 
 	)
 
 	parser.add_argument(
-        "--finetune", 
-        type = bool,
-        help = "flag for finetuning model.", 
+		"--finetune", 
+		type = bool,
+		help = "flag for finetuning model.", 
 	)
 
 	parser.add_argument(
-        "--lr", 
+		"--lr", 
 		default=1e-3,
 		type=float,
-        help = "learning rate for model training", 
+		help = "learning rate for model training", 
 	)
 
 	args = parser.parse_args()
@@ -70,9 +70,16 @@ def main():
 	mean = [0.485, 0.456, 0.406]
 	std = [0.229, 0.224, 0.225]
 
-	transform = transforms.Compose([
+	val_transform = transforms.Compose([
 		transforms.ToTensor(),
 		transforms.Normalize(mean, std)
+	])
+	
+	train_transform = transforms.Compose([
+		transforms.ToTensor(),
+		transforms.RandomHorizontalFlip(),
+		transforms.Resize(size=(96, 96)), 
+		transforms.RandomResizedCrop(48, scale=(0.75, 1.))
 	])
 
 
@@ -80,26 +87,26 @@ def main():
 	train_ds = EmotionDataset(
 		root=args.root_dir, 
 		split='train', 
-		transform=transform
+		transform=train_transform
 	)
 
 	val_ds = EmotionDataset(
 		root=args.root_dir, 
 		split='valid',
-		transform=transform
+		transform=val_transform
 	)
 
 	# dataloader
-	train_loader = DataLoader(train_ds, batch_size=32)
-	val_loader = DataLoader(val_ds, batch_size=32)
+	train_loader = DataLoader(train_ds, batch_size=64)
+	val_loader = DataLoader(val_ds, batch_size=64)
 
 	# model
 	model = EmotionModel(finetune=args.finetune, lr=args.lr)
+	model.load_from_checkpoint("/content/Emotion-Recognition/lightning_logs/version_3/checkpoints/epoch=29-step=6690.ckpt")
 
 	# training
-	trainer = pl.Trainer(max_epochs=10, limit_train_batches=0.5)
+	trainer = pl.Trainer(accelerator='gpu', devices=1, max_epochs=50, limit_train_batches=0.5)
 	trainer.fit(model, train_loader, val_loader)
 
 if __name__ == "__main__":
 	main()
-		
