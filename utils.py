@@ -20,3 +20,11 @@ def freeze(model, unfreeze=False):
     """
     for param in model.parameters():
         param.requires_grad = unfreeze
+        
+def accuracy(predictions, ground_truth):
+    """Funtion to calculate accuracy of the model.
+    """
+    
+    _, preds = torch.max(predictions, dim=1)
+    score = (preds == ground_truth).float().mean()
+    return score.item()
