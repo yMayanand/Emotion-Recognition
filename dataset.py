@@ -49,7 +49,8 @@ class EmotionDataset:
 
         label = temp[2:]
         label = np.array(label)
-        label = (label > 0).astype('float')
+        #label = (label > 0).astype('float')
+        label = np.argmax(label).astype('int64')
         return image, label
 
 
