@@ -1,4 +1,5 @@
 import cv2
+import torch
 
 def read_image(file):
     """Reads the image file
