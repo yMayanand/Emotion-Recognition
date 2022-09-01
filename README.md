@@ -1,2 +1,3 @@
 # Emotion-Recognition
-![Alt Text](output/result.gif)
+<img src="/output/result.gif" width="250" height="250"/>
+
