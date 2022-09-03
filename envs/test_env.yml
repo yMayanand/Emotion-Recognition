@@ -12,5 +12,6 @@ dependencies:
   - pip=22.1.2
   - timm=0.4.12
   - torchvision=0.13.1
+  - torchaudio=0.12.1
   - pip:
     - mediapipe==0.8.10.1
