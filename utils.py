@@ -1,5 +1,6 @@
 import cv2
 import torch
+from urllib.request import urlretrieve
 
 def read_image(file):
     """Reads the image file
@@ -15,12 +16,6 @@ def read_image(file):
     image = cv2.imread(file)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     return image
-
-def freeze(model, unfreeze=False):
-    """Function to freeze model parameters necessary for finetuning.
-    """
-    for param in model.parameters():
-        param.requires_grad = unfreeze
         
 def accuracy(predictions, ground_truth):
     """Funtion to calculate accuracy of the model.
@@ -29,3 +24,9 @@ def accuracy(predictions, ground_truth):
     _, preds = torch.max(predictions, dim=1)
     score = (preds == ground_truth).float().mean()
     return score.item()
+
+def download_weights(url):
+    fname = url.split('/')[-1].split('.')
+    urlretrieve(url, url.split('/')[-1].split('.'))
+    return fname
+
