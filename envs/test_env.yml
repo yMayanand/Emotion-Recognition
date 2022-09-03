@@ -1,14 +1,16 @@
 name: test-emotion
 channels:
+  - pytorch
+  - conda-forge
   - defaults
 dependencies:
-  - conda
-  - python=3.9
-  - timm
-  - cpuonly
-  - torchvision
-  - torchaudio
-  - opencv
-  - pytorch
+  - conda=4.14.0
+  - cpuonly=2.0
+  - opencv=4.6.0
+  - python=3.9.13
+  - pytorch=1.12.1
+  - pip=22.1.2
+  - timm=0.4.12
+  - torchvision=0.13.1
   - pip:
-    - mediapipe
+    - mediapipe==0.8.10.1
