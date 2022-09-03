@@ -1,0 +1,14 @@
+name: test-emotion
+channels:
+  - defaults
+dependencies:
+  - conda
+  - python=3.9
+  - timm
+  - cpuonly
+  - torchvision
+  - torchaudio
+  - opencv
+  - pytorch
+  - pip:
+    - mediapipe
