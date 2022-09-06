@@ -99,4 +99,5 @@ if __name__ == '__main__':
     parser.add_argument('--save_path', type=str, default='./result.jpg', help='path to save image')
     args = parser.parse_args()
     model = load_model(args.model_name)
+
     predict(args.image_path, args.save_path)

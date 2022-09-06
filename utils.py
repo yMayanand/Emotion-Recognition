@@ -27,5 +27,5 @@ def accuracy(predictions, ground_truth):
 
 def download_weights(url):
     fname = url.split('/')[-1]
-    urlretrieve(url, url.split('/')[-1])
+    urlretrieve(url, fname)
     return fname
