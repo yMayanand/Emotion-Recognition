@@ -29,4 +29,3 @@ def download_weights(url):
     fname = url.split('/')[-1]
     urlretrieve(url, url.split('/')[-1])
     return fname
-
