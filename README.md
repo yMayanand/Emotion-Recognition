@@ -6,7 +6,7 @@ This repository contains a pytorch implementation of an emotion classification a
 </p>
 
 ## Requirements
-The program is written in Python, and uses [pytorch](http://pytorch.org/), [numpy](https://numpy.org/), [opencv](https://opencv.org/), gputils, pycocotools. 
+download requirements using conda
 
 ## Usage
 ### Dataset
