@@ -46,7 +46,7 @@ emotions = ['neutral', 'happy :-)', 'surprise :-O', 'sad', 'angry >:(',
 colors = [(0, 128, 255), (255, 0, 255), (0, 255, 255), (255, 191, 0), (0, 0, 255),
           (255, 255, 0), (0, 191, 255), (255, 0, 191), (255, 0, 191), (255, 0, 191)]
 
-def predict(image, save_path):
+def predict(image, save_path, model):
     image = cv2.imread(image)
     h, w, c = image.shape
 
@@ -100,4 +100,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     model = load_model(args.model_name)
 
-    predict(args.image_path, args.save_path)
+    predict(args.image_path, args.save_path, model)
