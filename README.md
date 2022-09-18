@@ -22,3 +22,4 @@ conda env create -f envs/test_env.yml
 conda activate test-emotion
 python video_cam.py
 ```
+you can also try my project directly from [here](https://huggingface.co/spaces/Mayanand/emotion-recognition) which is live on huggingface spaces.
